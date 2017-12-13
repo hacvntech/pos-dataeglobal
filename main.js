@@ -8,41 +8,89 @@ const url = require('url')
 //
 // THIS SECTION IS NOT REQUIRED
 //-------------------------------------------------------------------
-let template = []
-if (process.platform === 'darwin') {
-  // OS X
-  const name = app.getName();
-  template.unshift({
-    label: name,
+const name = app.getName();
+const template = [
+  {
+    label: 'Edit',
     submenu: [
-      {
-        label: 'About ' + name,
-        role: 'about'
-      },
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click() { app.quit(); }
-      },
+      {role: 'undo'},
+      {role: 'redo'},
+      {type: 'separator'},
+      {role: 'cut'},
+      {role: 'copy'},
+      {role: 'paste'},
+      {role: 'pasteandmatchstyle'},
+      {role: 'delete'},
+      {role: 'selectall'}
     ]
-  })
-}
-else if (process.platform === 'win') {
-  const name = app.getName();
-  template.unshift({
-    label: name,
+  },
+  {
+    label: 'View',
+    submenu: [
+      {role: 'reload'},
+      {role: 'forcereload'},
+      {role: 'toggledevtools'},
+      {type: 'separator'},
+      {role: 'resetzoom'},
+      {role: 'zoomin'},
+      {role: 'zoomout'},
+      {type: 'separator'},
+      {role: 'togglefullscreen'}
+    ]
+  },
+  {
+    role: 'window',
+    submenu: [
+      {role: 'minimize'},
+      {role: 'close'}
+    ]
+  },
+  {
+    role: 'help',
     submenu: [
       {
-        label: 'About ' + name,
-        role: 'about'
+        label: 'Learn More',
+        click () { require('electron').shell.openExternal('https://dataeglobal.com') }
       },
       {
-        label: 'Quit',
-        accelerator: 'Shift+Esc',
-        click() { app.quit(); }
+        label: 'Check for Updates...',
+        click() { checkForUpdates(this); }
       }
     ]
+  }
+]
+
+if (process.platform === 'darwin') {
+  template.unshift({
+    label: app.getName(),
+    submenu: [
+      {
+        label: 'About ' + name,
+        role: 'about'
+      },
+      {type: 'separator'},
+      {
+        label: 'Preferences...',
+        accelerator: 'Command+,',
+      },
+      // {role: 'services', submenu: []},
+      {type: 'separator'},
+      {role: 'hide'},
+      {role: 'hideothers'},
+      {role: 'unhide'},
+      {type: 'separator'},
+      {role: 'quit'}
+    ]
   })
+
+  // Window menu
+  template[3].submenu = [
+    {role: 'close'},
+    {role: 'minimize'},
+    {role: 'zoom'},
+    {type: 'separator'},
+    {role: 'front'}
+  ]
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -67,9 +115,10 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html') + "#v" + app.getVersion(),
+    pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
+    query: { 'version': app.getVersion() }
   }))
 
   // mainWindow.webContents.openDevTools({detach:true});

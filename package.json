@@ -1,6 +1,6 @@
 {
   "name": "POS",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "POS System of Dataeglobal",
   "main": "main.js",
   "author": "HAC Team",
@@ -50,7 +50,7 @@
         }
       ],
       "icon": "icon.icns",
-      "title": "POS 1.0.0"
+      "title": "POS Nail"
     },
     "linux": {
       "target": [
