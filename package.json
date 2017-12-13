@@ -1,0 +1,84 @@
+{
+  "name": "POS",
+  "version": "1.0.0",
+  "description": "POS System of Dataeglobal",
+  "main": "main.js",
+  "author": "HAC Team",
+  "license": "Apache 2.0",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "start": "electron .",
+    "package-mac": "electron-packager . --electron-version=1.7.9 --overwrite --platform=darwin --arch=x64 --icon=icon.icns --prune=true --out=release && cp -r bower_components/ release/POS-darwin-x64/POS.app/Contents/Resources/bower_components",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=icon.ico --prune=true --out=release --version-string.CompanyName=Dataeglobal --version-string.FileDescription=Dataeglobal --version-string.ProductName=\"POS\"",
+    "create-installer-mac": "electron-installer-dmg ./release/POS-MacOS-x64/POS.app pos-app --out=release --overwrite --icon=icon.icns",
+    "create-installer-win": "node installers/windows/createinstaller.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist-win": "build -- --win --x64",
+    "publish": "build --mac --win -p always"
+  },
+  "keywords": [
+    "Electron",
+    "pos nail"
+  ],
+  "devDependencies": {
+    "electron": "~1.7.8",
+    "electron-builder": "^19.48.3",
+    "electron-cookies": "^1.1.0"
+  },
+  "build": {
+    "appId": "com.dataeglobal.pos",
+    "productName": "POS Nail",
+    "copyright": "HAC copyright 2017",
+    "directories": {
+      "output": "release"
+    },
+    "extraResources": [
+      "./bower_components/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "icon": "icon.icns",
+      "title": "POS 1.0.0"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "icon.ico",
+      "publisherName": "POS Nail",
+      "sign": "./sign.js"
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "hacvntech",
+      "repo": "pos-dataeglobal"
+    }]
+  },
+  "dependencies": {
+    "electron-updater": "^2.17.4"
+  }
+}

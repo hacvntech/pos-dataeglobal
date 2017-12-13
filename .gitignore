@@ -1,0 +1,14 @@
+syntax: glob
+node_modules/*
+.DS_Store
+release/*
+webworker/*
+yarn.lock
+styles/*
+scripts/*
+app/*
+assets/*
+bower_components/*
+fonts/*
+index.html
+maps/*
