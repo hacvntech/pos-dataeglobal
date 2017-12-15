@@ -72,13 +72,16 @@
       "publisherName": "POS Nail",
       "sign": "./sign.js"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "hacvntech",
-      "repo": "pos-dataeglobal"
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "hacvntech",
+        "repo": "pos-dataeglobal"
+      }
+    ]
   },
   "dependencies": {
-    "electron-updater": "^2.17.4"
+    "electron-updater": "^2.17.4",
+    "jquery": "^3.2.1"
   }
 }

@@ -104,6 +104,7 @@ function createWindow () {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    frame: false,
     width: 1440,
     height: 900,
     fullscreenable: true
@@ -121,7 +122,18 @@ function createWindow () {
     query: { 'version': app.getVersion() }
   }))
 
-  // mainWindow.webContents.openDevTools({detach:true});
+  // mainWindow.webContents.executeJavaScript(`
+  //   var path = require('path');
+  //   module.paths.push(path.resolve('node_modules'));
+  //   module.paths.push(path.resolve('../node_modules'));
+  //   module.paths.push(path.resolve(__dirname, '..', '..', 'electron', 'node_modules'));
+  //   module.paths.push(path.resolve(__dirname, '..', '..', 'electron.asar', 'node_modules'));
+  //   module.paths.push(path.resolve(__dirname, '..', '..', 'app', 'node_modules'));
+  //   module.paths.push(path.resolve(__dirname, '..', '..', 'app.asar', 'node_modules'));
+  //   path = undefined;
+  // `);
+
+  mainWindow.webContents.openDevTools({detach:true});
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -208,3 +220,18 @@ function checkForUpdates (menuItem, focusedWindow, event) {
   autoUpdater.checkForUpdates()
 }
 module.exports.checkForUpdates = checkForUpdates
+
+/* create event emitter from angularjs */
+ipcMain.on('minimize-window', (event, arg) => {
+  mainWindow.minimize();
+  // event.sender.send('asynchronous-reply', 'pong')
+})
+ipcMain.on('restore-window', (event, arg) => {
+  if(mainWindow.isMaximized())
+    mainWindow.unmaximize();
+  else
+    mainWindow.maximize();
+})
+ipcMain.on('close-window', (event, arg) => {
+  mainWindow.close();
+})
