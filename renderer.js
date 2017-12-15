@@ -2,7 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const {ipcRenderer, remote} = require('electron');  
-const { Menu, MenuItem } = remote;
+const { app, Menu, MenuItem } = remote;
 
 const template = [
   {

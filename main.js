@@ -133,7 +133,7 @@ function createWindow () {
   //   path = undefined;
   // `);
 
-  mainWindow.webContents.openDevTools({detach:true});
+  // mainWindow.webContents.openDevTools({detach:true});
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
