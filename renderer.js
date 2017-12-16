@@ -1,15 +1,17 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const {ipcRenderer, remote } = require('electron');  
+const { ipcRenderer, remote } = require('electron');
 const { app, Menu, MenuItem } = remote;
+
 angular.module('inspinia').service('electron', function($rootScope){
-  this.ipcRenderer = ipcRenderer;
-  this.remote = remote;
-  this.app = app;
-  this.Menu = Menu;
-  this.MenuItem = MenuItem;
-  this.template = [
+  var me = this;
+  me.ipcRenderer = ipcRenderer;
+  me.remote = remote;
+  me.app = app;
+  me.Menu = Menu;
+  me.MenuItem = MenuItem;
+  me.template = [
     {
       label: 'Edit',
       submenu: [
@@ -50,22 +52,22 @@ angular.module('inspinia').service('electron', function($rootScope){
       submenu: [
         {
           label: 'Learn More',
-          click () { this.ipcRenderer.send('learnMore'); }
+          click () { me.ipcRenderer.send('learnMore'); }
         },
         {
           label: 'Check for Updates...',
-          click() { this.ipcRenderer.send('checkForUpdates'); }
+          click() { me.ipcRenderer.send('checkForUpdates'); }
         }
       ]
     }
   ]
 
   if (process.platform === 'darwin') {
-    this.template.unshift({
-      label: this.app.getName(),
+    me.template.unshift({
+      label: me.app.getName(),
       submenu: [
         {
-          label: 'About ' + this.app.getName(),
+          label: 'About ' + me.app.getName(),
           role: 'about'
         },
         {type: 'separator'},
@@ -84,7 +86,7 @@ angular.module('inspinia').service('electron', function($rootScope){
     })
 
     // Window menu
-    this.template[3].submenu = [
+    me.template[3].submenu = [
       {role: 'close'},
       {role: 'minimize'},
       {role: 'zoom'},
@@ -92,17 +94,17 @@ angular.module('inspinia').service('electron', function($rootScope){
       {role: 'front'}
     ]
   }
-  this.menu = this.Menu.buildFromTemplate(this.template);
-  this.minimizeWindow = function() {
-    this.ipcRenderer.send('minimize-window');
+  me.menu = me.Menu.buildFromTemplate(me.template);
+  me.minimizeWindow = function() {
+    me.ipcRenderer.send('minimize-window');
   }
-  this.restoreWindow = function() {
-    this.ipcRenderer.send('restore-window');
+  me.restoreWindow = function() {
+    me.ipcRenderer.send('restore-window');
   }
-  this.closeWindow = function() {
-    this.ipcRenderer.send('close-window');
+  me.closeWindow = function() {
+    me.ipcRenderer.send('close-window');
   }
-  this.showMenuWindow = function(e) {
-    this.menu.popup(remote.getCurrentWindow());
+  me.showMenuWindow = function(e) {
+    me.menu.popup(remote.getCurrentWindow());
   }
 });
