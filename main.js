@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, protocol, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, Menu, protocol, ipcMain, dialog, shell } = require('electron')
 const { autoUpdater } = require("electron-updater");
 const path = require('path')
 const url = require('url')
@@ -50,7 +50,7 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click () { require('electron').shell.openExternal('https://dataeglobal.com') }
+        click () { openLearnMoreLink(); }
       },
       {
         label: 'Check for Updates...',
@@ -214,6 +214,9 @@ app.on('activate', function () {
     createWindow()
   }
 })
+function openLearnMoreLink() {
+  shell.openExternal('https://dataeglobal.com');
+}
 function checkForUpdates (menuItem, focusedWindow, event) {
   updater = menuItem
   updater.enabled = false
@@ -234,4 +237,10 @@ ipcMain.on('restore-window', (event, arg) => {
 })
 ipcMain.on('close-window', (event, arg) => {
   mainWindow.close();
+})
+ipcMain.on('checkForUpdates', (event, arg) => {
+  autoUpdater.checkForUpdates()
+})
+ipcMain.on('learnMore', (event, arg) => {
+  openLearnMoreLink();
 })
