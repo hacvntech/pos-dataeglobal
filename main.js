@@ -173,6 +173,7 @@ autoUpdater.on('update-not-available', (info) => {
     title: 'No Updates',
     message: 'Current version is up-to-date.'
   })
+
   updater.enabled = true
   updater = null
 })
@@ -217,7 +218,7 @@ app.on('activate', function () {
 function openLearnMoreLink() {
   shell.openExternal('https://dataeglobal.com');
 }
-function checkForUpdates (menuItem, focusedWindow, event) {
+function checkForUpdates (menuItem, event) {
   updater = menuItem
   updater.enabled = false
   autoUpdater.checkForUpdates()
@@ -238,8 +239,8 @@ ipcMain.on('restore-window', (event, arg) => {
 ipcMain.on('close-window', (event, arg) => {
   mainWindow.close();
 })
-ipcMain.on('checkForUpdates', (event, arg) => {
-  autoUpdater.checkForUpdates()
+ipcMain.on('checkForUpdates', (event, menuItem) => {
+  checkForUpdates(menuItem);
 })
 ipcMain.on('learnMore', (event, arg) => {
   openLearnMoreLink();

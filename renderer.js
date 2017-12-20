@@ -56,7 +56,7 @@ angular.module('inspinia').service('electron', function($rootScope){
         },
         {
           label: 'Check for Updates...',
-          click() { me.ipcRenderer.send('checkForUpdates'); }
+          click() { me.ipcRenderer.send('checkForUpdates', this); }
         }
       ]
     }
